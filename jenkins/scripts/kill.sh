@@ -1,5 +1,5 @@
-@echo off
+#!/usr/bin/env sh
 
-rem Stop and remove Docker container named my-apache-php-app
+set -x
 docker kill my-apache-php-app
 docker rm my-apache-php-app
