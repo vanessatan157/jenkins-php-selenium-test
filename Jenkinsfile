@@ -12,14 +12,10 @@ pipeline {
                     }
                 }
                 stage('Headless Browser Test') {
-                    agent {
-                        docker {
-                            image 'maven:3-adoptopenjdk-11' // Using AdoptOpenJDK 11 instead of Alpine
-                            args '-v C:\\Users\\h20ch\\.m2:/root/.m2' // Adjust path accordingly
-                        }
-                    }
+                    agent any
                     environment {
-                        PATH = "${tool 'Maven'}/bin:${env.PATH}" // Adjust Maven tool name if needed
+                        MAVEN_HOME = 'D:\\apache-maven-3.9.8'
+                        PATH = "${MAVEN_HOME}\\bin;${env.PATH}"
                     }
                     steps {
                         bat 'mvn -B -DskipTests clean package'
