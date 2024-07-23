@@ -6,21 +6,20 @@ pipeline {
                 stage('Deploy') {
                     agent any
                     steps {
-                        sh 'jenkins/scripts/deploy.sh'
-                        input message: 'Finished using the web site? (Click "Proceed" to continue)'
-                        sh 'jenkins/scripts/kill.sh'
+                        bat 'jenkins\\scripts\\deploy.bat'
+                        input message: 'Finished using the website? (Click "Proceed" to continue)'
+                        bat 'jenkins\\scripts\\kill.bat'
                     }
                 }
                 stage('Headless Browser Test') {
-                    agent {
-                        docker {
-                            image 'maven:3-alpine' 
-                            args '-v /root/.m2:/root/.m2' 
-                        }
+                    agent any
+                    environment {
+                        MAVEN_HOME = 'D:\\apache-maven-3.9.8'
+                        PATH = "${MAVEN_HOME}\\bin;${env.PATH}"
                     }
                     steps {
-                        sh 'mvn -B -DskipTests clean package'
-                        sh 'mvn test'
+                        bat 'mvn -B -DskipTests clean package'
+                        bat 'mvn test'
                     }
                     post {
                         always {
